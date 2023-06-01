@@ -28,6 +28,8 @@ class LinkService
     {
         $link = Link::where('link', $request['link'])->firstOrFail();
 
+        $link->increment('click_count');
+
         return redirect($link->url);
     }
 
