@@ -29,4 +29,15 @@ class LinkController extends Controller
             'message' => $message
         ]);
     }
+
+    public function redirect(Request $request)
+    {
+        $validated = $request->validate([
+            'link' => 'required|url|min:8|max:255'
+        ]);
+
+        $response = $this->linkService->redirect($validated);
+
+        return $response;
+    }
 }

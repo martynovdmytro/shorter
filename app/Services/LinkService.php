@@ -9,32 +9,29 @@ class LinkService
     public function transform($request)
     {
         $url = $request['url'];
-        $link = $this->generateLink();
+        $parsedUrl = parse_url($url);
+        $address = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
+        $code = $this->generateCode();
+        $link = $address . $code;
 
-        // $address = parse url
-        // адрес должен быть выделен в отдельнуя ячейку
-        // url должен быть выделен в другую ячейку
-        // возврат линка в виде: $address . $link
-
-        $response = Link::create([
-            // 'address' => $address,
+        Link::create([
+            'address' => $address,
             'url' => $url,
+            'code' => $code,
             'link' => $link
         ]);
 
-        return $response;
+        return $link;
     }
 
-    public function redirect($code)
+    public function redirect($request)
     {
-        // $address . $link redirect to $address . $url
-
-        $link = Link::where('link', $code)->firstOrFail();
+        $link = Link::where('link', $request['link'])->firstOrFail();
 
         return redirect($link->url);
     }
 
-    private function generateLink()
+    private function generateCode()
     {
         $shortCode = '';
 
@@ -46,6 +43,6 @@ class LinkService
             $shortCode .= $characters[$randomIndex];
         }
 
-        return $shortCode;
+        return '/' . $shortCode;
     }
 }

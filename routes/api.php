@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/transform', [LinkController::class, 'transform']);
+Route::get('/redirect', [LinkController::class, 'redirect']);
