@@ -16,7 +16,11 @@ class LinkController extends Controller
 
     public function transform(Request $request)
     {
-        $response = $this->linkService->transform($request);
+        $validated = $request->validate([
+            'url' => 'required|url|min:8|max:255'
+        ]);
+
+        $response = $this->linkService->transform($validated);
 
         $message = $response ? 'success' : 'error';
 
