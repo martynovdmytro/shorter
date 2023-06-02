@@ -36,8 +36,8 @@ class LinkController extends Controller
             'link' => 'required|url|min:8|max:255'
         ]);
 
-        $response = $this->linkService->redirect($validated);
+        $link = $this->linkService->getLink($validated);
 
-        return $response;
+        return redirect($link->url);
     }
 }

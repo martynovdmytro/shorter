@@ -24,13 +24,14 @@ class LinkService
         return $link;
     }
 
-    public function redirect($request)
+    public function getLink($request)
     {
         $link = Link::where('link', $request['link'])->firstOrFail();
 
         $link->increment('click_count');
+        $link->refresh();
 
-        return redirect($link->url);
+        return $link;
     }
 
     private function generateCode()
