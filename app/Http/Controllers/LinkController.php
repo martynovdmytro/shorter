@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\LinkService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LinkController extends Controller
 {
@@ -38,6 +39,18 @@ class LinkController extends Controller
 
         $link = $this->linkService->getLink($validated);
 
-        return redirect($link->url);
+        $data = json_encode([
+            'link' => $validated['link'],
+            'click' => $link->click_count
+        ]);
+
+        $cookie = cookie('click_counter', $data, 60);
+
+        return redirect($link->url)->cookie($cookie);
+    }
+
+    public function getClickCounter(Request $request)
+    {
+        return json_decode($request->cookie('click_counter'));
     }
 }
