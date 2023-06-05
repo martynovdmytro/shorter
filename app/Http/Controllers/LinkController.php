@@ -53,4 +53,9 @@ class LinkController extends Controller
     {
         return json_decode($request->cookie('click_counter'));
     }
+
+    public function getAll()
+    {
+        return $this->linkService->getAllLinks();
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Link;
+use Illuminate\Support\Facades\DB;
 
 class LinkService
 {
@@ -47,5 +48,10 @@ class LinkService
         }
 
         return '/' . $shortCode;
+    }
+
+    public function getAllLinks ()
+    {
+        return Link::all();
     }
 }

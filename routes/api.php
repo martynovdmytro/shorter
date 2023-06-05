@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/transform', [LinkController::class, 'transform']);
 Route::get('/redirect', [LinkController::class, 'redirect']);
 Route::get('/clickcounter', [LinkController::class, 'getClickCounter']);
+Route::get('/getall', [LinkController::class, 'getAll']);
