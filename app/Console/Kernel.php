@@ -3,7 +3,6 @@
 namespace App\Console;
 
 use App\Jobs\CheckUrlAvailability;
-use App\Services\LinkService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -18,7 +17,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(CheckUrlAvailability::class)
-            ->onQueue('check_url_availability')
             ->everyTwoMinutes()
             ->withoutOverlapping();
     }
