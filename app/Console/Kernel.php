@@ -17,7 +17,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(CheckUrlAvailability::class)->everyTwoMinutes()->withoutOverlapping();
+        $schedule->job(CheckUrlAvailability::class)
+            ->onQueue('check_url_availability')
+            ->everyTwoMinutes()
+            ->withoutOverlapping();
     }
 
     /**
