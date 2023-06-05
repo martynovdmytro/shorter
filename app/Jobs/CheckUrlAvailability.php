@@ -37,7 +37,7 @@ class CheckUrlAvailability implements ShouldQueue
         $urlCollection = $this->linkService->getAllLinks();
 
         foreach ($urlCollection as $item) {
-            $active = $this->checkLinkAvailability($item->url);
+            $active = $this->linkService->checkLinkAvailability($item->url);
             if (!$active) {
                 DB::table('links')->where('id', $item->id)->update([
                     'active' => false

@@ -19,7 +19,7 @@ class CreateLinksTable extends Migration
             $table->string('address');
             $table->string('code');
             $table->string('link');
-            $table->boolean('active')->nullable();
+            $table->boolean('active')->default(0);
             $table->integer('click_count')->default(0);
             $table->timestamps();
         });

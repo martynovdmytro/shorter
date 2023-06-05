@@ -13,6 +13,8 @@ class Link extends Model
         'url',
         'code',
         'address',
+        'active',
+        'click_count',
         'link'
     ];
 }

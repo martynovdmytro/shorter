@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\CheckUrlAvailability;
 use App\Models\Link;
 use Illuminate\Support\Facades\DB;
 
@@ -10,7 +11,7 @@ class LinkService
     public function transform($request)
     {
         $url = $request['url'];
-        $active = $this->checkLinkAvailability($url) ? true : false;
+        $active = $this->checkLinkAvailability($url);
         $parsedUrl = parse_url($url);
         $address = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
         $code = $this->generateCode();
@@ -72,6 +73,6 @@ class LinkService
 
         curl_close($curl);
 
-        return $statusCode === 200;
+        return $statusCode == 200;
     }
 }
