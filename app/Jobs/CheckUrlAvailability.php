@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class CheckUrlAvailability implements ShouldQueue
 {
@@ -33,17 +34,16 @@ class CheckUrlAvailability implements ShouldQueue
      */
     public function handle()
     {
-//        $urlCollection = $this->linkService->getAllLinks
+        $urlCollection = $this->linkService->getAllLinks();
 
-        // foreach ($urlCollection as $url) {
-
-        // $this->checkLinkAvailability($url)
-        // if urlAvailable = false {
-        // links where id = id update active = false
-        // }
-        // }
-
-
+        foreach ($urlCollection as $item) {
+            $active = $this->checkLinkAvailability($item->url);
+            if (!$active) {
+                DB::table('links')->where('id', $item->id)->update([
+                    'active' => false
+                ]);
+            }
+        }
     }
 
     public function checkLinkAvailability($url)
