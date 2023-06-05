@@ -10,6 +10,7 @@ class LinkService
     public function transform($request)
     {
         $url = $request['url'];
+        $active = $this->checkLinkAvailability($url) ? true : false;
         $parsedUrl = parse_url($url);
         $address = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
         $code = $this->generateCode();
@@ -19,6 +20,7 @@ class LinkService
             'address' => $address,
             'url' => $url,
             'code' => $code,
+            'active' => $active,
             'link' => $link
         ]);
 
@@ -29,17 +31,20 @@ class LinkService
     {
         $link = Link::where('link', $request['link'])->firstOrFail();
 
-        $link->increment('click_count');
-        $link->refresh();
+        if ($link->active) {
+            $link->increment('click_count');
+            $link->refresh();
 
-        return $link;
+            return $link;
+        } else {
+            return false;
+        }
     }
 
     private function generateCode()
     {
         $shortCode = '';
 
-        // use regulars
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
         for ($i = 0; $i < 8; $i++) {
@@ -53,5 +58,20 @@ class LinkService
     public function getAllLinks ()
     {
         return Link::all();
+    }
+
+    public function checkLinkAvailability($url)
+    {
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+
+        $response = curl_exec($curl);
+        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+
+        return $statusCode === 200;
     }
 }

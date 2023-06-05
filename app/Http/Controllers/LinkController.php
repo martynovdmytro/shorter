@@ -39,14 +39,18 @@ class LinkController extends Controller
 
         $link = $this->linkService->getLink($validated);
 
-        $data = json_encode([
-            'link' => $validated['link'],
-            'click' => $link->click_count
-        ]);
+        if (!empty($link)) {
+            $data = json_encode([
+                'link' => $validated['link'],
+                'click' => $link->click_count
+            ]);
 
-        $cookie = cookie('click_counter', $data, 60);
+            $cookie = cookie('click_counter', $data, 60);
 
-        return redirect($link->url)->cookie($cookie);
+            return redirect($link->url)->cookie($cookie);
+        } else {
+            return response()->json(['error' => 'Not Found'], 404);
+        }
     }
 
     public function getClickCounter(Request $request)

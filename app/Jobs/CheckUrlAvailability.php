@@ -45,19 +45,4 @@ class CheckUrlAvailability implements ShouldQueue
             }
         }
     }
-
-    public function checkLinkAvailability($url)
-    {
-        $curl = curl_init($url);
-
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_NOBODY, true);
-
-        $response = curl_exec($curl);
-        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        curl_close($curl);
-
-        return $statusCode === 200;
-    }
 }
