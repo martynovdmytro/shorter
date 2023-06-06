@@ -18,7 +18,7 @@ class CreateLinksTable extends Migration
             $table->string('url');
             $table->string('address');
             $table->string('code');
-            $table->string('link');
+            $table->string('link')->index();
             $table->boolean('active')->default(0);
             $table->integer('click_count')->default(0);
             $table->timestamps();

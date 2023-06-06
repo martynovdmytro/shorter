@@ -9,26 +9,27 @@ class LinkService
     public function transform($request)
     {
         $url = $request['url'];
-        $active = $this->checkLinkAvailability($url);
-        $parsedUrl = parse_url($url);
-        $address = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
-        $code = $this->generateCode();
-        $link = $address . $code;
 
-        // check link by name
-        // if link {
-        // return link
-        // else {
-        // create
-        // }
+        $issetUrl = Link::where('url', $url)->first();
 
-        Link::create([
-            'address' => $address,
-            'url' => $url,
-            'code' => $code,
-            'active' => $active,
-            'link' => $link
-        ]);
+        if (!$issetUrl) {
+            $active = $this->checkLinkAvailability($url);
+            $parsedUrl = parse_url($url);
+            $address = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
+            $code = $this->generateCode();
+            $link = $address . $code;
+
+            Link::create([
+                'address' => $address,
+                'url' => $url,
+                'code' => $code,
+                'active' => $active,
+                'link' => $link
+            ]);
+
+        } else {
+            $link = $issetUrl->link;
+        }
 
         return $link;
     }
