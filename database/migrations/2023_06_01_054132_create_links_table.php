@@ -15,10 +15,10 @@ class CreateLinksTable extends Migration
     {
         Schema::create('links', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->string('url')->index();
             $table->string('address');
             $table->string('code');
-            $table->string('link')->index();
+            $table->string('link');
             $table->boolean('active')->default(0);
             $table->integer('click_count')->default(0);
             $table->timestamps();
