@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use App\Jobs\CheckUrlAvailability;
 use App\Models\Link;
-use Illuminate\Support\Facades\DB;
 
 class LinkService
 {
@@ -16,6 +14,13 @@ class LinkService
         $address = $parsedUrl['scheme'] . '://' . $parsedUrl['host'];
         $code = $this->generateCode();
         $link = $address . $code;
+
+        // check link by name
+        // if link {
+        // return link
+        // else {
+        // create
+        // }
 
         Link::create([
             'address' => $address,
